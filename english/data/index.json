@@ -1,0 +1,15 @@
+{
+ "updatedAt": "2026-10-08T13:11:33.494Z",
+ "lessons": [
+  {
+   "id": "L001",
+   "seq": 1,
+   "kind": "normal",
+   "title": "출장 첫날 호텔 체크인: 예약 확인하고 요청하기",
+   "titleEn": "Checking in and making requests",
+   "theme": "여행",
+   "level": 3.5,
+   "scene": "출장으로 뉴욕의 호텔에 저녁에 도착했다. 프런트에서 예약을 확인하고, 조식 포함 여부를 묻고, 조용한 방과 늦은 체크아웃을 부탁한다."
+  }
+ ]
+}

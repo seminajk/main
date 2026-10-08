@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>영어 회화 30분</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Newsreader:opsz,wght@6..72,600&display=swap">
+<style>
+/* Layout: one reading column (max 760px). Home = today's course card + progress notes.
+   Lesson = sticky course bar (timer + six numbered steps), one step panel at a time. */
+:root{
+  --paper:#F1F4F5; --card:#FFFFFF; --ink:#17212A; --muted:#566370; --line:#D3DBDF;
+  --ai:#0F6A63; --ai-ink:#FFFFFF; --ai-soft:#DCEEEB;
+  --matcha:#4C6A1C; --matcha-soft:#E6EDD6;
+  --shu:#A3402D; --shu-soft:#F6E2DC;
+  --f-display:"Newsreader",Georgia,"Times New Roman",serif;
+  --f-tx:"Atkinson Hyperlegible","Helvetica Neue",Arial,sans-serif;
+  --f-ui:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1417; --card:#151D21; --ink:#E2E8EA; --muted:#93A2A8; --line:#26333A;
+    --ai:#6CC2B8; --ai-ink:#0B1715; --ai-soft:#17302D;
+    --matcha:#A9C76F; --matcha-soft:#222C14;
+    --shu:#E8907B; --shu-soft:#36211C; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1417; --card:#151D21; --ink:#E2E8EA; --muted:#93A2A8; --line:#26333A;
+  --ai:#6CC2B8; --ai-ink:#0B1715; --ai-soft:#17302D;
+  --matcha:#A9C76F; --matcha-soft:#222C14;
+  --shu:#E8907B; --shu-soft:#36211C; color-scheme:dark;
+}
+html,body{background:var(--paper);color:var(--ink)}
+body{font-family:var(--f-ui);font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:18px 110px;display:grid;gap:16px}
+h1,h2,h3{margin:0;line-height:1.3;text-wrap:balance}
+h1{font-size:1.45rem;font-weight:600}
+h2{font-size:1.1rem;font-weight:600}
+h3{font-size:.95rem;font-weight:600}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.eyebrow{font-size:.75rem;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.tx{font-family:var(--f-tx);font-size:1.12rem;line-height:1.6}
+.disp{font-family:var(--f-display);font-weight:600}
+.ko{font-size:.9rem;color:var(--muted)}
+.hide-ko .ko{display:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:12px;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.between{justify-content:space-between}
+.stack{display:grid;gap:10px;min-width:0}
+.btn{appearance:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 16px;cursor:pointer;font-weight:500;line-height:1.2;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--ai)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.primary{background:var(--ai);border-color:var(--ai);color:var(--ai-ink)}
+.btn.big{padding:13px 22px;font-size:1rem}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--muted)}
+.btn.on{background:var(--ai-soft);border-color:var(--ai)}
+.play{appearance:none;flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--ai)}
+.play:hover{border-color:var(--ai)}
+.play svg{width:14px;height:14px}
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 10px;font-size:.8rem;background:var(--ai-soft);color:var(--ink)}
+.chip.warn{background:var(--shu-soft)}
+.chip.good{background:var(--matcha-soft)}
+.notice{border-radius:10px;padding:10px 12px;background:var(--ai-soft);font-size:.9rem}
+.notice.warn{background:var(--shu-soft)}
+.notice.good{background:var(--matcha-soft)}
+
+/* home */
+.hero{gap:14px}
+.hero .disp{font-size:1.05rem;color:var(--muted)}
+.course{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.course li{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:grid;gap:2px;min-width:0}
+.course .num{font-family:var(--f-display);font-size:1.1rem;color:var(--ai)}
+.course .nm{font-weight:600;font-size:.9rem}
+.course .mn{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (max-width:520px){.course{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:2px}
+.stat b{font-size:1.25rem;font-variant-numeric:tabular-nums;font-weight:600}
+.stat span{font-size:.78rem;color:var(--muted)}
+.spark{width:100%;height:64px;display:block}
+.hist{list-style:none;margin:0;padding:0;display:grid}
+.hist li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:.9rem}
+.hist li:first-child{border-top:0}
+.hist .t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist .s{flex:none;font-variant-numeric:tabular-nums;color:var(--muted)}
+
+/* lesson bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.bar-in{max-width:760px;margin:0 auto;padding:10px 16px 8px;display:grid;gap:8px}
+.bar-top{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.bar-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:.92rem}
+.timer{flex:none;font-variant-numeric:tabular-nums;font-size:.9rem;color:var(--muted)}
+.timer b{color:var(--ink);font-weight:600}
+.steps{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.step{flex:none;appearance:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 11px;font-size:.8rem;cursor:pointer;display:inline-flex;gap:5px;align-items:center}
+.step .n{font-family:var(--f-display);color:var(--ai)}
+.step.cur{border-color:var(--ai);background:var(--ai-soft)}
+.step.done .n::after{content:" ✓";font-family:var(--f-ui);color:var(--matcha)}
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--paper);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.foot-in{max-width:760px;margin:0 auto;display:flex;gap:8px;justify-content:space-between;align-items:center}
+
+/* lines */
+.lines{display:grid;gap:8px}
+.line{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card)}
+.line.me{background:var(--ai-soft);border-color:transparent}
+.line.now{outline:2px solid var(--ai);outline-offset:1px}
+.who{font-size:.72rem;color:var(--muted);writing-mode:horizontal-tb;padding-top:5px;min-width:2.6em;text-align:center;line-height:1.25}
+.who .jn{font-family:var(--f-tx);font-size:.82rem;color:var(--ink);display:block}
+.veil .line:not(.open) .tx,.veil .line:not(.open) .ko{filter:blur(7px);user-select:none}
+.veil .line:not(.open){cursor:pointer}
+.reps{display:flex;gap:4px;margin-top:6px}
+.rep{appearance:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:.7rem;color:var(--muted)}
+.rep.on{background:var(--matcha);border-color:var(--matcha);color:var(--card)}
+.expr{display:grid;gap:4px;padding:12px 0;border-top:1px solid var(--line)}
+.expr:first-child{border-top:0;padding-top:0}
+.expr .note{font-size:.88rem}
+.grammar{background:var(--ai-soft);border-radius:10px;padding:14px;display:grid;gap:8px}
+
+/* flashcard */
+.flash{border:1px solid var(--line);border-radius:var(--r);padding:22px 18px;display:grid;gap:10px;text-align:center;justify-items:center}
+.flash .ko{font-size:1.15rem;color:var(--ink)}
+.flash .tx{font-size:1.3rem}
+
+/* quiz */
+.q{display:grid;gap:10px;padding:14px 0;border-top:1px solid var(--line)}
+.q:first-child{border-top:0;padding-top:0}
+.q-h{display:flex;gap:8px;align-items:baseline}
+.q-n{font-family:var(--f-display);color:var(--ai);flex:none}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:520px){.opts{grid-template-columns:minmax(0,1fr)}}
+.opt{appearance:none;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 12px;cursor:pointer;min-width:0;line-height:1.45}
+.opt:hover:not(:disabled){border-color:var(--ai)}
+.opt.right{background:var(--matcha-soft);border-color:var(--matcha)}
+.opt.wrong{background:var(--shu-soft);border-color:var(--shu)}
+.opt:disabled{cursor:default}
+textarea{width:100%;min-height:64px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--card);font-family:var(--f-tx);font-size:1.02rem;line-height:1.6}
+textarea:focus{outline:2px solid var(--ai);outline-offset:0;border-color:transparent}
+
+/* chat */
+.chat{display:grid;gap:10px}
+.bub{max-width:88%;border-radius:14px;padding:10px 13px;display:grid;gap:4px;min-width:0}
+.bub.them{background:var(--card);border:1px solid var(--line);justify-self:start}
+.bub.mine{background:var(--ai-soft);justify-self:end}
+.bub .row{gap:6px}
+.say{border-left:3px solid var(--matcha);padding:4px 10px;font-size:.88rem;display:grid;gap:2px}
+.goals{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.goals li{font-size:.9rem;display:flex;gap:8px}
+.goals li::before{content:"○";color:var(--muted)}
+.goals li.ok::before{content:"●";color:var(--matcha)}
+.think{color:var(--muted);font-size:.9rem}
+
+/* result */
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:560px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.lvl{font-size:1.05rem}
+.lvl b{font-variant-numeric:tabular-nums}
+.fix{display:grid;gap:3px;padding:10px 0;border-top:1px solid var(--line)}
+.fix:first-child{border-top:0;padding-top:0}
+.fix .wrong{text-decoration:line-through;text-decoration-color:var(--shu);color:var(--muted)}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(80px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;font-size:.88rem;z-index:20;max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion:no-preference){.line,.opt,.btn,.step{transition:background-color .15s,border-color .15s}}
+</style>
+<style>
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+details summary{cursor:pointer;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast" hidden></div>
+<script>
+(() => {
+'use strict';
+
+/* ---------- constants ---------- */
+
+const STEPS = [
+  {key:'review', num:'1', name:'복습',     min:3, desc:'지난 표현 떠올리기'},
+  {key:'listen', num:'2', name:'듣기',     min:7, desc:'대화문을 귀로 먼저'},
+  {key:'expr',   num:'3', name:'표현·문법', min:5, desc:'다시 쓸 표현 익히기'},
+  {key:'shadow', num:'4', name:'쉐도잉',   min:5, desc:'듣고 바로 따라 말하기'},
+  {key:'role',   num:'5', name:'롤플레이', min:7, desc:'글로 하는 실전 대화'},
+  {key:'test',   num:'6', name:'테스트',   min:3, desc:'채점 후 결과 보내기'}
+];
+const SKILLS = ['듣기','어휘','표현','전치사·관사','시제·동사','공손함','작문'];
+const LEVEL_BANDS = [
+  {max:2.5, label:'입문',   cefr:'A1', guide:'문장 4~7단어, 현재형·can·want·Can I have ~?, 아주 흔한 단어만, 대화 6~8줄'},
+  {max:4.5, label:'초중급', cefr:'A2', guide:"문장 6~12단어, 과거·미래형, Could I/Could you/I'd like, wh-질문, if possible 같은 완충 표현, 대화 8~10줄"},
+  {max:6.5, label:'중급',   cefr:'B1', guide:'문장 10~16단어, 이유·조건(because, if, so that), 흔한 구동사(check in, run out of), 의견·감상, 대화 10~12줄'},
+  {max:8.5, label:'중상급', cefr:'B2', guide:'완곡 표현(I was wondering if, It might be better to), 뉘앙스 차이, 맥락 속 관용 표현, 대화 12~14줄'},
+  {max:99,  label:'상급',   cefr:'C1', guide:'자연스러운 구어 축약·맞장구·유머, 설득과 화제 전환, 빠른 화자, 대화 12~16줄'}
+];
+const band = lv => LEVEL_BANDS.find(b => lv < b.max) || LEVEL_BANDS[LEVEL_BANDS.length - 1];
+const SRS_DAYS = [1, 2, 4, 8, 16];
+
+/* ---------- utils ---------- */
+
+function h(tag, props, ...kids) {
+  const el = document.createElement(tag);
+  if (props) for (const [k, v] of Object.entries(props)) {
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'text') el.textContent = v;
+    else if (k === 'value') el.value = v;
+    else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v);
+    else if (v === true) el.setAttribute(k, '');
+    else el.setAttribute(k, v);
+  }
+  for (const c of kids.flat(Infinity)) {
+    if (c == null || c === false) continue;
+    el.append(c instanceof Node ? c : document.createTextNode(String(c)));
+  }
+  return el;
+}
+const pad = n => String(n).padStart(2, '0');
+const todayStr = (d = new Date()) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+function addDays(str, n) { const [y, m, d] = str.split('-').map(Number); return todayStr(new Date(y, m - 1, d + n)); }
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const clone = o => o == null ? o : JSON.parse(JSON.stringify(o));
+const pct = v => v == null ? '–' : Math.round(v * 100) + '%';
+const fmtLv = v => (Math.round(v * 100) / 100).toFixed(2).replace(/0$/, '').replace(/\.0$/, '');
+function seededOrder(n, seed) {
+  let s = 2166136261;
+  for (const ch of seed) s = Math.imul(s ^ ch.charCodeAt(0), 16777619) >>> 0;
+  const idx = [...Array(n).keys()];
+  for (let i = n - 1; i > 0; i--) { s = (Math.imul(s, 1103515245) + 12345) >>> 0; const j = s % (i + 1); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  return idx;
+}
+
+function errText(e) { return (e && e.message) ? String(e.message) : '알 수 없는 오류가 났어요.'; }
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 3200);
+}
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem('en30x:' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('en30x:' + k, JSON.stringify(v)); } catch {} }
+};
+const ICON_PLAY = '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 2.5v11l9-5.5z"/></svg>';
+const ICON_STOP = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect fill="currentColor" x="3.5" y="3.5" width="9" height="9" rx="1"/></svg>';
+function icon(svg) { const s = document.createElement('span'); s.innerHTML = svg; s.style.display = 'contents'; return s; }
+
+/* ---------- server data (GitHub Pages, 매일 밤 자동화가 갱신) ---------- */
+async function fetchJSON(p) {
+  const r = await fetch(p + (p.includes('?') ? '&' : '?') + 'v=' + Date.now(), {cache: 'no-store'});
+  if (!r.ok) throw new Error(`${p} 를 불러오지 못했어요 (${r.status})`);
+  return r.json();
+}
+const lessonCache = {};
+async function getLesson(id) {
+  if (!lessonCache[id]) lessonCache[id] = await fetchJSON('data/lessons/' + id + '.json');
+  return lessonCache[id];
+}
+
+/* ---------- result relay (ntfy) ---------- */
+// 결과는 ntfy 토픽으로 보내고, 매일 밤 자동화가 거둬 간다. ntfy 는 메시지를 12시간만 들고 있어서
+// 아직 반영되지 않은 결과는 앱을 열 때마다 10시간 간격으로 다시 보낸다(중복은 밤 작업이 걸러 낸다).
+const RESEND_MS = 10 * 3600e3;
+async function sendResult(rec) {
+  if (!S.config) throw new Error('설정을 불러오지 못했어요.');
+  const body = JSON.stringify(rec.payload), size = 1200, of = Math.ceil(body.length / size);
+  const url = S.config.relay.replace(/\/$/, '') + '/' + S.config.topic;
+  for (let i = 0; i < of; i++) {
+    const r = await fetch(url, {method: 'POST', body: JSON.stringify({id: rec.payload.id, part: i, of, d: body.slice(i * size, (i + 1) * size)})});
+    if (!r.ok) throw new Error('전송 실패 (' + r.status + ')');
+  }
+  rec.sentAt = Date.now(); saveLocal();
+}
+async function flushOutbox(force) {
+  const processed = new Set((S.profile && S.profile.processed) || []);
+  for (const rec of Object.values(S.local.results)) {
+    if (processed.has(rec.id)) { rec.acked = true; delete rec.payload; continue; }
+    if (!rec.payload || (!force && rec.sentAt && Date.now() - rec.sentAt < RESEND_MS)) continue;
+    try { await sendResult(rec); } catch (e) { rec.error = errText(e); }
+  }
+  saveLocal();
+}
+
+/* ---------- state ---------- */
+const S = {
+  mode: 'loading', loadError: null, config: null,
+  profile: null, index: [], lesson: null,
+  local: {results: LS.get('results', {}), cards: LS.get('cards', {})},
+  view: 'home', step: 0, session: null, finishing: false,
+  prefs: Object.assign({ko: true, rate: 0.9, autoplay: true}, LS.get('prefs', {}))
+};
+const savePrefs = () => LS.set('prefs', S.prefs);
+const saveLocal = () => { LS.set('results', S.local.results); LS.set('cards', S.local.cards); };
+const saveDraft = () => { if (S.session) LS.set('draft', {lessonId: S.session.lessonId, step: S.step, session: S.session}); };
+function defaultProfile() {
+  return {level: 3.5, startedAt: todayStr(), streak: 0, lastDoneDate: null, completed: 0, totalMinutes: 0,
+    skillStats: {}, recentMistakes: [], levelHistory: [], coachNote: '', focus: [], done: {}, processed: []};
+}
+function newSession() {
+  return {
+    startedAt: Date.now(), steps: {},
+    review: {i: 0, shown: false, total: 0, known: 0, queue: null},
+    listen: {veil: false},
+    shadow: {reps: {}, mode: 'me'},
+    role: {i: 0, replies: [], draft: '', hint: false, goalsSelf: []},
+    quiz: {answers: {}, produce: {}, graded: null, selfGrade: {}}
+  };
+}
+function weakSkills(P) {
+  return Object.entries(P.skillStats || {})
+    .filter(([, v]) => v.n >= 1.5 && v.wrong / v.n >= 0.3)
+    .sort((a, b) => b[1].wrong / b[1].n - a[1].wrong / a[1].n)
+    .slice(0, 3).map(([k]) => k);
+}
+const localDone = id => Object.values(S.local.results).some(r => r.lessonId === id);
+const isDone = id => !!((S.profile.done || {})[id]) || localDone(id);
+const pending = () => Object.values(S.local.results).filter(r => !r.acked).sort((a, b) => a.completedAt < b.completedAt ? -1 : 1);
+
+/* ---------- boot / load ---------- */
+async function boot() {
+  TTS.init();
+  render();
+  try { await loadAll(); S.mode = 'ready'; } catch (e) { S.loadError = errText(e); S.mode = 'error'; }
+  render();
+  if (S.mode === 'ready') { await flushOutbox(false); render(); }
+}
+async function loadAll() {
+  const [cfg, p, idx] = await Promise.all([fetchJSON('config.json'), fetchJSON('data/profile.json'), fetchJSON('data/index.json')]);
+  S.config = cfg;
+  S.profile = Object.assign(defaultProfile(), p || {});
+  S.index = ((idx && idx.lessons) || []).slice().sort((a, b) => a.seq - b.seq);
+  await pickLesson();
+}
+async function pickLesson() {
+  const next = S.index.find(l => !isDone(l.id));
+  S.lesson = next ? await getLesson(next.id) : null;
+}
+
+/* ---------- render root ---------- */
+let rendering = false;
+function render() {
+  // 지워지는 textarea 의 change(blur) 이벤트가 render 안에서 다시 render 를 부를 수 있어 다음 틱으로 미룬다
+  if (rendering) { setTimeout(render, 0); return; }
+  rendering = true;
+  try { renderNow(); } finally { rendering = false; }
+}
+function renderNow() {
+  const app = document.getElementById('app');
+  let node;
+  if (S.mode === 'loading') node = h('div', {class: 'wrap'}, h('div', {class: 'card'}, h('p', {class: 'muted', text: '레슨을 불러오는 중…'})));
+  else if (S.mode === 'error') node = h('div', {class: 'wrap'}, h('div', {class: 'card'},
+    h('h1', {text: '영어 회화 30분'}), h('div', {class: 'notice warn', text: '불러오기 실패: ' + S.loadError}),
+    h('button', {class: 'btn primary', type: 'button', text: '다시 시도', onclick: () => location.reload()})));
+  else if (S.view === 'lesson' && S.lesson && S.session) node = viewLesson();
+  else if (S.view === 'result') node = viewResult();
+  else node = viewHome();
+  app.replaceChildren(node);
+  if (S.view === 'lesson') saveDraft();
+  tickTimer();
+}
+
+/* ---------- home ---------- */
+function viewHome() {
+  const P = S.profile || defaultProfile(), L = S.lesson, b = band(P.level);
+  const doneToday = P.lastDoneDate === todayStr() || pending().some(r => r.date === todayStr());
+  const kids = [];
+  const eyebrow = `Lv ${fmtLv(P.level)} · ${b.label}(${b.cefr}) · 연속 ${P.streak || 0}일`;
+  if (L) {
+    const draft = LS.get('draft', null);
+    const resuming = draft && draft.lessonId === L.id;
+    kids.push(h('section', {class: 'card hero'},
+      h('div', {class: 'row between'}, h('span', {class: 'eyebrow', text: eyebrow}), h('span', {class: 'chip', text: (L.kind === 'checkpoint' ? '주간 점검 · ' : '') + `레슨 ${L.seq}`})),
+      doneToday ? h('div', {class: 'notice good small', text: '오늘 30분은 이미 끝냈어요. 아래는 다음 레슨이에요. 내일 하거나, 여유가 있으면 지금 미리 해도 돼요.'}) : null,
+      h('div', {class: 'stack'},
+        h('h1', {text: L.title}),
+        L.titleEn ? h('p', {class: 'disp', text: L.titleEn}) : null,
+        h('p', {text: L.scene}),
+        h('p', {class: 'small'}, h('b', {text: '목표 '}), L.goal)),
+      h('ol', {class: 'course'}, STEPS.map(s => h('li', null, h('span', {class: 'num', text: s.num}), h('span', {class: 'nm', text: s.name}), h('span', {class: 'mn', text: `${s.min}분 · ${s.desc}`})))),
+      h('div', {class: 'row'},
+        h('button', {class: 'btn primary big', type: 'button', onclick: startSession, text: resuming ? '이어서 30분 시작' : '30분 시작'}),
+        h('span', {class: 'small muted', text: '소리를 켜고 시작하세요. 이어폰이면 쉐도잉이 편해요.'}))));
+  } else {
+    kids.push(h('section', {class: 'card hero'},
+      h('span', {class: 'eyebrow', text: eyebrow}),
+      h('h1', {text: '다음 레슨은 오늘 밤 11시에 준비돼요'}),
+      h('p', {class: 'muted', text: '오늘 푼 결과를 채점하고, 점수와 약한 영역에 맞춘 다음 레슨을 매일 밤 11시에 새로 만들어 올려요. 그때 다시 열어 주세요.'}),
+      S.index.length ? h('p', {class: 'small muted', text: '지난 표현 복습은 언제든 할 수 있어요. 아래 교정 노트도 소리 내어 읽어 보세요.'}) : null));
+  }
+
+  const pend = pending();
+  if (pend.length) kids.push(h('section', {class: 'card'},
+    h('h2', {text: '채점 대기 중'}),
+    h('p', {class: 'small muted', text: '작문·롤플레이 채점과 레벨 조정은 매일 밤 11시에 한꺼번에 해요. 결과는 자동으로 보내졌어요.'}),
+    h('ul', {class: 'hist'}, pend.map(r => h('li', null,
+      h('span', {class: 't', text: `${r.seq}. ${r.title}`}),
+      h('span', {class: 's', text: `${r.date.slice(5)} · ${r.error && !r.sentAt ? '전송 실패' : r.sentAt ? '보냄' : '보내는 중'}`})))),
+    pend.some(r => r.error && !r.sentAt) ? h('button', {class: 'btn', type: 'button', text: '다시 보내기', onclick: async () => { await flushOutbox(true); render(); }}) : null));
+
+  const rep = P.lastReport;
+  if (rep && rep.items && rep.items.length) kids.push(h('section', {class: 'card'},
+    h('div', {class: 'row between'}, h('h2', {text: '밤 11시 코치 리포트'}), h('span', {class: 'small muted', text: rep.date})),
+    rep.note ? h('p', {text: rep.note}) : null,
+    h('ul', {class: 'hist'}, rep.items.map(x => h('li', null,
+      h('span', {class: 't', text: x.title}),
+      h('span', {class: 's', text: `${pct(x.composite)} · Lv ${fmtLv(x.levelBefore)}→${fmtLv(x.levelAfter)}`})))),
+    rep.items.map(x => h('p', {class: 'small muted', text: `${x.title}: ${x.reason}`})),
+    h('details', null, h('summary', {class: 'small', text: '레슨별 채점 자세히 보기'}),
+      h('div', {class: 'stack', id: 'report-detail', style: 'margin-top:8px'}, h('p', {class: 'small muted', text: '불러오는 중…'})))));
+
+  const hist = (P.levelHistory || []).slice(-30);
+  kids.push(h('section', {class: 'card'},
+    h('div', {class: 'row between'}, h('h2', {text: '내 실력 기록'}), h('span', {class: 'small muted', text: `시작 ${P.startedAt || '–'}`})),
+    h('div', {class: 'stats'},
+      h('div', {class: 'stat'}, h('b', {text: String(P.completed || 0)}), h('span', {text: '완료한 레슨'})),
+      h('div', {class: 'stat'}, h('b', {text: String(P.totalMinutes || 0)}), h('span', {text: '누적 학습(분)'})),
+      h('div', {class: 'stat'}, h('b', {text: String(P.streak || 0)}), h('span', {text: '연속 일수'}))),
+    hist.length >= 2 ? sparkline(hist) : h('p', {class: 'small muted', text: '레슨을 두 번 이상 끝내면 레벨 변화 그래프가 여기에 그려져요.'}),
+    levelExplain(P),
+    P.coachNote ? h('div', {class: 'notice small'}, h('b', {text: '코치 메모 '}), P.coachNote,
+      (P.focus || []).length ? h('div', {class: 'row', style: 'margin-top:6px'}, h('span', {text: '이번 주 집중'}), P.focus.map(f => h('span', {class: 'chip', text: f}))) : null,
+      P.levelNote ? h('div', {class: 'small muted', style: 'margin-top:4px', text: '레벨 보정: ' + P.levelNote}) : null) : null,
+    (P.recentMistakes || []).length ? h('div', {class: 'stack'}, h('h3', {text: '최근 교정 노트'}), (P.recentMistakes || []).slice(0, 4).map(fixRow)) : null));
+
+  const done = S.index.filter(l => (P.done || {})[l.id]);
+  if (done.length) kids.push(h('section', {class: 'card'}, h('h2', {text: '지난 레슨'}),
+    h('ul', {class: 'hist'}, done.slice().reverse().map(l => {
+      const r = P.done[l.id];
+      return h('li', null, h('span', {class: 't', text: `${l.seq}. ${l.title}`}), h('span', {class: 's', text: `${r.date} · ${pct(r.composite)} · Lv ${fmtLv(r.levelAfter)}`}));
+    }))));
+  kids.push(h('p', {class: 'small muted', text: '기록(복습 카드·진행 중인 레슨)은 이 브라우저에 저장돼요. 레벨과 레슨은 어느 기기에서 열어도 같아요.'}));
+  queueMicrotask(loadReportDetail);
+  return h('div', {class: 'wrap'}, kids);
+}
+async function loadReportDetail() {
+  const box = document.getElementById('report-detail'); const rep = S.profile.lastReport;
+  if (!box || !rep || box.dataset.loaded) return;
+  box.dataset.loaded = '1';
+  const parts = [];
+  for (const x of rep.items) {
+    let r; try { r = await fetchJSON('data/results/' + x.lessonId + '.json'); } catch { continue; }
+    const rp = r.roleplay || {}, rt = rp.rating;
+    parts.push(h('div', {class: 'stack'},
+      h('h3', {text: `${r.seq}. ${r.title}`}),
+      h('div', {class: 'row'},
+        h('span', {class: 'chip', text: `테스트 ${pct(r.quiz && r.quiz.pct)}`}),
+        rt ? [['정확성', rt.accuracy], ['유창성', rt.fluency], ['자연스러움', rt.naturalness]].map(([k, v]) => h('span', {class: 'chip', text: `${k} ${v}/5`})) : h('span', {class: 'chip', text: '롤플레이 안 함'}),
+        h('span', {class: 'chip', text: `복습 ${pct(r.review && r.review.pct)}`})),
+      ((r.quiz && r.quiz.items) || []).filter(q => q.type === 'produce').map(q => h('div', {class: 'fix'},
+        h('span', {class: 'small muted', text: q.prompt}),
+        h('span', {class: 'tx' + (q.score < 2 ? ' wrong small' : ''), text: q.answer || '(빈칸)'}),
+        q.score < 2 && q.corrected ? h('div', {class: 'row'}, h('span', {class: 'tx', text: q.corrected}), playBtn(q.corrected, 'me')) : null,
+        h('span', {class: 'small', text: (q.score === 2 ? '정답. ' : q.score === 1 ? '거의 맞음. ' : '다시 보기. ') + (q.why || '')}))),
+      (rp.good || []).map(g => h('p', {class: 'small'}, '👍 ', g)),
+      (rp.corrections || []).map(fixRow),
+      rp.nextTip ? h('div', {class: 'notice small'}, h('b', {text: '다음엔 '}), rp.nextTip) : null));
+  }
+  box.replaceChildren(...(parts.length ? parts : [h('p', {class: 'small muted', text: '자세한 채점을 불러오지 못했어요.'})]));
+}
+function levelExplain(P) {
+  const weak = weakSkills(P);
+  return h('div', {class: 'stack'},
+    h('p', {class: 'small muted', text: '매일 밤 11시에 그날 푼 테스트(45%), 롤플레이 평가(35%), 복습 기억률(20%)로 종합 점수를 내요. 85% 이상이면 레벨을 올리고 55% 미만이면 내려요. 일곱 번째 레슨마다 주간 점검이 있고, 그때는 폭이 세 배예요. 주간 점검 다음 날 밤에는 코치가 한 주를 돌아보고 다음 주 집중 영역을 정해요.'}),
+    weak.length ? h('div', {class: 'row'}, h('span', {class: 'small', text: '보강 중인 영역'}), weak.map(w => h('span', {class: 'chip warn', text: w}))) : null);
+}
+
+
+/* ---------- speech ---------- */
+
+const TTS = {
+  ok: 'speechSynthesis' in window, en: [],
+  init() {
+    if (!this.ok) return;
+    const load = () => { this.en = speechSynthesis.getVoices().filter(v => /^en(-|_|$)/i.test(v.lang)); };
+    load();
+    try { speechSynthesis.addEventListener('voiceschanged', load); } catch {}
+  },
+  pick(role) {
+    const all = this.en; if (!all.length) return null;
+    const us = all.filter(x => /^en[-_]US/i.test(x.lang)), v = us.length ? us : all;
+    const pref = role === 'me' ? ['Alex','Aaron','Tom','Fred','Google US English'] : ['Samantha','Ava','Allison','Google US English','Karen'];
+    for (const p of pref) { const f = v.find(x => x.name.includes(p)); if (f) return f; }
+    return v[role === 'me' && v.length > 1 ? 1 : 0];
+  },
+  speak(text, role = 'partner', rate) {
+    return new Promise(res => {
+      if (!this.ok || !text) return res(false);
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      const v = this.pick(role); if (v) u.voice = v;
+      u.rate = rate || S.prefs.rate;
+      let done = false;
+      const fin = ok => { if (!done) { done = true; clearTimeout(t); res(ok); } };
+      const t = setTimeout(() => fin(true), 4000 + text.length * 400 / u.rate);
+      u.onend = () => fin(true); u.onerror = () => fin(false);
+      speechSynthesis.speak(u);
+    });
+  },
+  stop() { if (this.ok) speechSynthesis.cancel(); }
+};
+let playToken = 0;
+async function say(text, role) { TTS.stop(); playToken++; await TTS.speak(text, role); }
+function playBtn(text, role, label) {
+  return h('button', {class: 'play', type: 'button', 'aria-label': label || '듣기', onclick: e => { e.stopPropagation(); say(text, role); }}, icon(ICON_PLAY));
+}
+
+function sparkline(hist) {
+  const W = 300, H = 64, pad = 6;
+  const vals = hist.map(x => Number(x.level) || 0);
+  const lo = Math.min(...vals) - 0.25, hi = Math.max(...vals) + 0.25;
+  const x = i => pad + i * (W - 2 * pad) / (vals.length - 1);
+  const y = v => H - pad - (v - lo) / (hi - lo) * (H - 2 * pad);
+  const pts = vals.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('class', 'spark'); svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', `레벨 변화 ${vals[0]}에서 ${vals[vals.length - 1]}`);
+  svg.innerHTML = `<polyline points="${pts}" fill="none" stroke="var(--ai)" stroke-width="2" stroke-linejoin="round"/>` +
+    `<circle cx="${x(vals.length - 1)}" cy="${y(vals[vals.length - 1])}" r="3.5" fill="var(--ai)"/>` +
+    `<text x="${W - pad}" y="12" text-anchor="end" font-size="11" fill="var(--muted)">Lv ${fmtLv(vals[vals.length - 1])}</text>`;
+  return svg;
+}
+function fixRow(m) {
+  return h('div', {class: 'fix'},
+    m.wrong ? h('span', {class: 'tx wrong small', text: m.wrong}) : null,
+    h('div', {class: 'row'}, h('span', {class: 'tx', text: m.right}), m.right ? playBtn(m.right, 'me') : null),
+    m.why ? h('span', {class: 'small', text: m.why}) : null);
+}
+
+/* ---------- lesson session ---------- */
+function startSession() {
+  if (!(S.session && S.session.lessonId === S.lesson.id)) {
+    const draft = LS.get('draft', null);
+    if (draft && draft.lessonId === S.lesson.id && draft.session) { S.session = draft.session; S.step = draft.step || 0; }
+    else {
+      S.session = newSession(); S.session.lessonId = S.lesson.id;
+      S.step = 0;
+    }
+  }
+  S.view = 'lesson';
+  render();
+  window.scrollTo(0, 0);
+}
+function goStep(i) { TTS.stop(); playToken++; S.step = clamp(i, 0, STEPS.length - 1); render(); window.scrollTo(0, 0); }
+function completeStep() {
+  const key = STEPS[S.step].key;
+  if (key === 'review') saveLocal();
+  S.session.steps[key] = true;
+  if (S.step < STEPS.length - 1) goStep(S.step + 1); else render();
+}
+
+
+let timerInt;
+function tickTimer() {
+  clearInterval(timerInt);
+  const upd = () => {
+    const el = document.getElementById('timer'); if (!el || !S.session) return;
+    const s = Math.floor((Date.now() - S.session.startedAt) / 1000);
+    el.querySelector('b').textContent = `${pad(Math.floor(s / 60))}:${pad(s % 60)}`;
+  };
+  if (S.view === 'lesson') { upd(); timerInt = setInterval(upd, 1000); }
+}
+function viewLesson() {
+  const L = S.lesson, st = STEPS[S.step];
+  const bar = h('div', {class: 'bar'}, h('div', {class: 'bar-in'},
+    h('div', {class: 'bar-top'},
+      h('button', {class: 'btn quiet', type: 'button', text: '← 홈', onclick: () => { TTS.stop(); S.view = 'home'; render(); }}),
+      h('span', {class: 'bar-title', text: L.title}),
+      h('span', {class: 'timer', id: 'timer'}, h('b', {text: '00:00'}), ' / 30:00')),
+    h('div', {class: 'steps', role: 'tablist'}, STEPS.map((s, i) =>
+      h('button', {class: 'step' + (i === S.step ? ' cur' : '') + (S.session.steps[s.key] ? ' done' : ''), type: 'button', role: 'tab', 'aria-selected': i === S.step ? 'true' : 'false', onclick: () => goStep(i)},
+        h('span', {class: 'n', text: s.num}), s.name)))));
+  const panels = {review: pReview, listen: pListen, expr: pExpr, shadow: pShadow, role: pRole, test: pTest};
+  const body = h('div', {class: 'wrap' + (S.prefs.ko ? '' : ' hide-ko')},
+    h('div', {class: 'row between'}, h('h2', null, h('span', {class: 'disp', text: st.num + ' '}), st.name), h('span', {class: 'small muted', text: `권장 ${st.min}분 · ${st.desc}`})),
+    panels[st.key](L));
+  const isLast = S.step === STEPS.length - 1;
+  const foot = h('div', {class: 'foot'}, h('div', {class: 'foot-in'},
+    h('button', {class: 'btn', type: 'button', text: '이전', disabled: S.step === 0, onclick: () => goStep(S.step - 1)}),
+    isLast ? h('span', {class: 'small muted', text: '채점을 확정하면 결과를 보내요'})
+      : h('button', {class: 'btn primary', type: 'button', text: '이 단계 끝 → ' + STEPS[S.step + 1].name, onclick: completeStep})));
+  return h('div', null, bar, body, foot);
+}
+function displayToggles(extra) {
+  const tg = (key, label) => h('button', {class: 'btn' + (S.prefs[key] ? ' on' : ''), type: 'button', 'aria-pressed': S.prefs[key] ? 'true' : 'false', text: label,
+    onclick: () => { S.prefs[key] = !S.prefs[key]; savePrefs(); render(); }});
+  const rate = h('select', {id: 'rate', 'aria-label': '재생 속도', class: 'btn', onchange: e => { S.prefs.rate = Number(e.target.value); savePrefs(); }},
+    [0.6, 0.75, 0.9, 1.0].map(v => h('option', {value: String(v), text: v === 1 ? '보통 속도' : `${Math.round(v * 100)}% 속도`, selected: Math.abs(S.prefs.rate - v) < 0.01})));
+  return h('div', {class: 'row'}, tg('ko', '한국어 뜻'), rate, extra || null,
+    TTS.ok ? null : h('span', {class: 'small muted', text: '이 브라우저는 음성 재생을 지원하지 않아요.'}));
+}
+function lineEl(d, opts = {}) {
+  const el = h('div', {class: 'line' + (d.who === 'me' ? ' me' : ''), 'data-i': opts.i},
+    h('span', {class: 'who'}, h('span', {class: 'jn', text: d.name}), d.nameKo || ''),
+    h('div', {class: 'stack', style: 'gap:2px'}, h('span', {class: 'tx', text: d.en}), h('span', {class: 'ko', text: d.ko}), opts.extra || null),
+    playBtn(d.en, d.who));
+  return el;
+}
+async function playSequence(lines, {pauseFor} = {}) {
+  TTS.stop(); const my = ++playToken;
+  const nodes = [...document.querySelectorAll('.line[data-i]')];
+  for (let i = 0; i < lines.length; i++) {
+    if (my !== playToken) break;
+    nodes.forEach(n => n.classList.toggle('now', Number(n.dataset.i) === i));
+    const n = nodes.find(x => Number(x.dataset.i) === i); if (n) n.scrollIntoView({block: 'center', behavior: 'smooth'});
+    await TTS.speak(lines[i].en, lines[i].who);
+    if (my !== playToken) break;
+    const pause = pauseFor ? pauseFor(lines[i]) : 350;
+    if (pause) await sleep(pause);
+  }
+  if (my === playToken) nodes.forEach(n => n.classList.remove('now'));
+}
+const stopBtn = () => h('button', {class: 'btn', type: 'button', onclick: () => { TTS.stop(); playToken++; document.querySelectorAll('.line.now').forEach(n => n.classList.remove('now')); }}, icon(ICON_STOP), '멈춤');
+
+/* review */
+function dueCards() {
+  const t = todayStr(), out = [];
+  for (const [lid, doc] of Object.entries(S.local.cards)) {
+    if (lid === S.lesson.id) continue;
+    (doc.items || []).forEach((c, idx) => { if (c.due <= t) out.push({lid, idx, c}); });
+  }
+  return out.sort((a, b) => a.c.due < b.c.due ? -1 : 1).slice(0, 8);
+}
+function pReview(L) {
+  const R = S.session.review;
+  if (!R.queue) { R.queue = dueCards(); R.total = 0; R.known = 0; }
+  if (!R.queue.length) return h('div', {class: 'card'},
+    h('p', {text: Object.keys(S.local.cards).length ? '오늘 복습할 카드가 없어요. 오늘 레슨의 표현을 먼저 훑어볼게요.' : '아직 이 브라우저에 복습 카드가 없어요. 오늘 배울 표현을 먼저 소리 내어 읽어 보세요. 오늘 레슨을 마치면 이 표현들이 내일부터 복습 카드로 나와요.'}),
+    displayToggles(),
+    h('div', {class: 'stack' + (S.prefs.ko ? '' : ' hide-ko')}, L.expressions.map(e => h('div', {class: 'expr'},
+      h('div', {class: 'row'}, h('span', {class: 'tx', text: e.en}), playBtn(e.en, 'partner')), h('span', {class: 'ko', text: e.ko})))));
+  if (R.i >= R.queue.length) return h('div', {class: 'card'},
+    h('h3', {text: `복습 끝: ${R.queue.length}장 중 ${R.known}장 기억`}),
+    h('p', {class: 'muted small', text: '기억한 카드는 간격을 늘려(1→2→4→8→16일) 다시 나오고, 잊은 카드는 내일 다시 나와요.'}));
+  const {c} = R.queue[R.i];
+  return h('div', {class: 'card'},
+    h('p', {class: 'small muted', text: `${R.i + 1} / ${R.queue.length} · 한국어를 보고 영어로 먼저 말해 본 뒤 정답을 확인하세요.`}),
+    h('div', {class: 'flash'},
+      h('span', {class: 'ko', text: c.ko}),
+      R.shown ? [h('span', {class: 'tx', text: c.en}), playBtn(c.en, 'partner')] : null),
+    R.shown
+      ? h('div', {class: 'row', style: 'justify-content:center'},
+          h('button', {class: 'btn', type: 'button', text: '몰랐어요', onclick: () => rateCard(false)}),
+          h('button', {class: 'btn primary', type: 'button', text: '기억났어요', onclick: () => rateCard(true)}))
+      : h('div', {class: 'row', style: 'justify-content:center'}, h('button', {class: 'btn primary', type: 'button', text: '정답 보기', onclick: () => { R.shown = true; render(); say(c.en, 'partner'); }})));
+}
+function rateCard(known) {
+  const R = S.session.review, {lid, idx, c} = R.queue[R.i];
+  const box = known ? Math.min(5, (c.box || 1) + 1) : 1;
+  const nc = Object.assign({}, c, {box, due: addDays(todayStr(), known ? SRS_DAYS[box - 1] : 1)});
+  if (S.local.cards[lid] && S.local.cards[lid].items) S.local.cards[lid].items[idx] = nc;
+  R.total++; if (known) R.known++;
+  R.i++; R.shown = false; saveLocal(); render();
+}
+
+
+/* listen */
+function pListen(L) {
+  const V = S.session.listen;
+  return h('div', {class: 'stack'},
+    h('div', {class: 'card'},
+      h('p', {text: L.scene}),
+      h('p', {class: 'small muted', text: '추천 순서: ① 텍스트를 가리고 두 번 듣기 → ② 텍스트를 열고 모르는 곳 확인 → ③ 한국어를 끄고 한 번 더.'}),
+      h('div', {class: 'row'},
+        h('button', {class: 'btn primary', type: 'button', onclick: () => playSequence(L.dialogue)}, icon(ICON_PLAY), '전체 듣기'),
+        stopBtn(),
+        h('button', {class: 'btn' + (V.veil ? ' on' : ''), type: 'button', 'aria-pressed': V.veil ? 'true' : 'false', text: '텍스트 가리기', onclick: () => { V.veil = !V.veil; render(); }})),
+      displayToggles()),
+    h('div', {class: 'lines' + (V.veil ? ' veil' : '')}, L.dialogue.map((d, i) => {
+      const el = lineEl(d, {i});
+      el.addEventListener('click', () => { if (V.veil) el.classList.add('open'); });
+      return el;
+    })));
+}
+
+/* expressions */
+function pExpr(L) {
+  const G = L.grammar || {};
+  return h('div', {class: 'stack'},
+    h('div', {class: 'card'}, displayToggles(),
+      h('div', null, L.expressions.map(e => h('div', {class: 'expr'},
+        h('div', {class: 'row'}, h('span', {class: 'tx', text: e.en}), playBtn(e.en, 'partner')), h('span', {class: 'ko', text: e.ko}),
+        e.note ? h('span', {class: 'note', text: e.note}) : null)))),
+    G.title ? h('div', {class: 'grammar'},
+      h('h3', {text: G.title}), h('p', {class: 'small', text: G.explain}),
+      (G.examples || []).map(x => h('div', {class: 'stack', style: 'gap:2px'}, h('div', {class: 'row'}, h('span', {class: 'tx', text: x.en}), playBtn(x.en, 'partner')), h('span', {class: 'ko', text: x.ko})))) : null,
+    L.tip ? h('div', {class: 'notice small'}, h('b', {text: '현지 팁 '}), L.tip) : null);
+}
+
+/* shadow */
+function pShadow(L) {
+  const Sh = S.session.shadow;
+  const est = d => Math.round(d.en.length * 170 / S.prefs.rate) + 900;
+  const pauseFor = d => (Sh.mode === 'all' || d.who === 'me') ? est(d) : 400;
+  return h('div', {class: 'stack'},
+    h('div', {class: 'card'},
+      h('p', {text: '핸즈프리 쉐도잉: 문장을 들려준 뒤 같은 길이만큼 멈춰요. 멈춤 동안 소리 내어 따라 하세요. 이동 중이면 화면을 보지 않아도 돼요.'}),
+      h('div', {class: 'row'},
+        h('button', {class: 'btn' + (Sh.mode === 'me' ? ' on' : ''), type: 'button', text: '내 대사만 따라 하기', onclick: () => { Sh.mode = 'me'; render(); }}),
+        h('button', {class: 'btn' + (Sh.mode === 'all' ? ' on' : ''), type: 'button', text: '모든 대사 따라 하기', onclick: () => { Sh.mode = 'all'; render(); }})),
+      h('div', {class: 'row'},
+        h('button', {class: 'btn primary', type: 'button', onclick: () => playSequence(L.dialogue, {pauseFor})}, icon(ICON_PLAY), '핸즈프리 시작'),
+        stopBtn()),
+      displayToggles()),
+    h('div', {class: 'lines'}, L.dialogue.map((d, i) => {
+      const reps = Sh.reps[i] || 0;
+      const repsEl = h('div', {class: 'reps', 'aria-label': '따라 한 횟수'}, [1, 2, 3].map(n =>
+        h('button', {class: 'rep' + (reps >= n ? ' on' : ''), type: 'button', text: String(n), 'aria-label': `${n}번 따라 함`, onclick: e => { e.stopPropagation(); Sh.reps[i] = reps >= n ? n - 1 : n; render(); }})));
+      return lineEl(d, {i, extra: repsEl});
+    })),
+    L.speaking && L.speaking.task ? h('div', {class: 'card'},
+      h('h3', {text: '말하기 과제'}), h('p', {text: L.speaking.task}),
+      h('details', null, h('summary', {class: 'small', text: '예시 답 보기'}),
+        h('div', {class: 'stack', style: 'gap:2px;margin-top:8px'}, h('div', {class: 'row'}, h('span', {class: 'tx', text: L.speaking.sample.en}), playBtn(L.speaking.sample.en, 'me')), h('span', {class: 'ko', text: L.speaking.sample.ko})))) : null);
+}
+
+/* roleplay (글로 하는 롤플레이: 상대 대사는 레슨에 미리 써 두고, 내 답은 밤 11시에 채점) */
+function roleTurns(L) {
+  const RP = L.roleplay;
+  return (RP.script && RP.script.length) ? RP.script : [{...RP.opening, hint: null}];
+}
+function pRole(L) {
+  const R = S.session.role, RP = L.roleplay, turns = roleTurns(L), free = !(RP.script && RP.script.length);
+  const kids = [];
+  kids.push(h('div', {class: 'card'},
+    h('p', null, h('b', {text: '상대 '}), `${RP.partnerKo} (`, h('span', {class: 'tx', style: 'font-size:.95rem', text: RP.partner}), ')'),
+    h('p', {class: 'small', text: RP.setting}),
+    h('p', {class: 'small muted', text: '목표를 이뤘다고 생각하면 체크하세요.'}),
+    h('ul', {class: 'goals'}, RP.goals.map((g, i) => h('li', {class: R.goalsSelf.includes(i + 1) ? 'ok' : '', style: 'cursor:pointer', role: 'checkbox', 'aria-checked': R.goalsSelf.includes(i + 1) ? 'true' : 'false', tabindex: '0', text: g,
+      onclick: () => { R.goalsSelf = R.goalsSelf.includes(i + 1) ? R.goalsSelf.filter(n => n !== i + 1) : [...R.goalsSelf, i + 1]; render(); }}))),
+    RP.mustUse.length ? h('div', {class: 'row'}, h('span', {class: 'small muted', text: '써 볼 표현'}), RP.mustUse.map(m => h('span', {class: 'chip tx', style: 'font-size:.85rem', text: m}))) : null,
+    displayToggles(h('button', {class: 'btn' + (S.prefs.autoplay ? ' on' : ''), type: 'button', text: '상대 대사 자동 재생', onclick: () => { S.prefs.autoplay = !S.prefs.autoplay; savePrefs(); render(); }}))));
+  const chat = h('div', {class: 'chat'});
+  const them = t => h('div', {class: 'bub them'}, h('div', {class: 'row'}, h('span', {class: 'tx', text: t.en}), playBtn(t.en, 'partner')), t.ko ? h('span', {class: 'ko', text: t.ko}) : null);
+  for (let k = 0; k <= Math.min(R.i, turns.length - 1); k++) {
+    chat.append(them(turns[k]));
+    if (R.replies[k] != null) chat.append(h('div', {class: 'bub mine'}, h('span', {class: 'tx', text: R.replies[k]})));
+  }
+  const finished = R.i >= turns.length;
+  kids.push(h('div', {class: 'card'}, chat,
+    finished ? h('div', {class: 'notice good small', text: '대화를 끝까지 했어요. 정확성·유창성·자연스러움 평가와 교정은 오늘 밤 11시에 받아요.'}) : roleInput(L, turns, free),
+    finished ? h('button', {class: 'btn quiet', type: 'button', text: '처음부터 다시', onclick: () => { R.i = 0; R.replies = []; R.draft = ''; render(); }}) : null));
+  return h('div', {class: 'stack'}, kids);
+}
+function roleInput(L, turns, free) {
+  const R = S.session.role, t = turns[R.i];
+  const ta = h('textarea', {id: 'role-input', value: R.draft,
+    placeholder: free ? '목표를 모두 이루도록 내 쪽 대사를 3~6문장 이어서 써 보세요. 키보드의 마이크(받아쓰기)로 말해도 돼요.' : '영어로 답해 보세요. 키보드의 마이크(받아쓰기)로 말해도 되고, 막히면 한국어로 써도 돼요.',
+    style: free ? 'min-height:140px' : null,
+    oninput: e => { R.draft = e.target.value; saveDraft(); },
+    onkeydown: e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); sendReply(L, turns); } }});
+  return h('div', {class: 'stack'}, ta,
+    h('div', {class: 'row between'},
+      h('div', {class: 'row'},
+        h('button', {class: 'btn primary', type: 'button', text: '보내기', onclick: () => sendReply(L, turns)}),
+        t && t.hint && t.hint.en ? h('button', {class: 'btn', type: 'button', text: '힌트', onclick: () => { R.hint = true; render(); }}) : null),
+      h('span', {class: 'small muted', text: `${Math.min(R.i + 1, turns.length)} / ${turns.length}`})),
+    R.hint && t && t.hint && t.hint.en ? h('div', {class: 'say'}, h('span', {class: 'small', text: '이렇게 말해 볼 수 있어요'}), h('div', {class: 'row'}, h('span', {class: 'tx', text: t.hint.en}), playBtn(t.hint.en, 'me')), h('span', {class: 'ko', text: t.hint.ko || ''})) : null);
+}
+function sendReply(L, turns) {
+  const R = S.session.role, text = (R.draft || '').trim();
+  if (!text) return;
+  R.replies[R.i] = text; R.draft = ''; R.hint = false; R.i++;
+  render();
+  if (R.i < turns.length && S.prefs.autoplay) say(turns[R.i].en, 'partner');
+  const ta = document.getElementById('role-input'); if (ta) ta.focus();
+}
+
+
+/* test */
+function allAnswered(L) {
+  const Q = S.session.quiz;
+  return L.quiz.every((q, i) => q.type === 'produce' ? (Q.produce[i] || '').trim() : Q.answers[i] != null);
+}
+function pTest(L) {
+  const Q = S.session.quiz;
+  const done = allAnswered(L);
+  const items = L.quiz.map((q, i) => quizItem(L, q, i));
+  const kids = [h('div', {class: 'card'},
+    h('p', {class: 'small muted', text: `객관식은 고르는 즉시 정답을 보여 줘요. 작문(${L.quiz.filter(q => q.type === 'produce').length}문항)은 모범답과 비교해 스스로 채점하고, 오늘 밤 11시에 코치가 다시 채점해 레벨에 반영해요.`}),
+    h('div', null, items))];
+  if (!Q.graded) {
+    kids.push(h('div', {class: 'card'}, selfGradeBlock(L, done)));
+  } else {
+    kids.push(h('div', {class: 'card'},
+      h('p', {text: `테스트 ${quizScore(L).pts.toFixed(1).replace(/\.0$/, '')} / ${L.quiz.length}점 (작문은 가채점)`}),
+      h('button', {class: 'btn primary big', type: 'button', text: S.finishing ? '보내는 중…' : '결과 보내고 30분 마치기', disabled: S.finishing, onclick: finishSession})));
+  }
+  return h('div', {class: 'stack'}, kids);
+}
+function quizItem(L, q, i) {
+  const Q = S.session.quiz;
+  const head = (label) => h('div', {class: 'q-h'}, h('span', {class: 'q-n', text: String(i + 1)}), h('span', {class: 'small muted', text: label}));
+  if (q.type === 'produce') {
+    const g = Q.graded && Q.graded[i];
+    return h('div', {class: 'q'}, head('작문 · 한국어를 영어로'), h('p', {text: q.prompt}),
+      g ? h('div', {class: 'stack', style: 'gap:4px'},
+            h('span', {class: 'tx', text: Q.produce[i] || ''}),
+            h('span', {class: 'chip ' + (g.score === 2 ? 'good' : 'warn'), text: g.score === 2 ? '맞음(가채점)' : g.score === 1 ? '비슷함(가채점)' : '다시 보기(가채점)'}),
+            h('div', {class: 'row'}, h('span', {class: 'small muted', text: '모범답: ' + q.model.en}), playBtn(q.model.en, 'me')))
+        : h('textarea', {id: 'q' + i, value: Q.produce[i] || '', placeholder: '영어로 쓰거나 받아쓰기로 말해 보세요', onchange: () => render(), oninput: e => { Q.produce[i] = e.target.value; saveDraft(); }}));
+  }
+  const order = seededOrder(q.options.length, L.id + ':' + i);
+  const ans = Q.answers[i];
+  const label = q.type === 'listen' ? '듣기 · 들은 문장의 뜻은?' : q.type === 'meaning' ? '표현 · 알맞은 영어는?' : '빈칸 · 들어갈 말은?';
+  const body = q.type === 'listen'
+    ? h('div', {class: 'row'}, h('button', {class: 'btn', type: 'button', onclick: () => say(q.en, 'partner')}, icon(ICON_PLAY), '문장 듣기'),
+        ans != null ? h('span', {class: 'tx', text: q.en}) : null)
+    : q.type === 'meaning' ? h('p', {text: q.prompt})
+    : h('div', {class: 'stack', style: 'gap:2px'}, h('span', {class: 'tx', text: q.en}), q.ko ? h('span', {class: 'ko', text: q.ko}) : null);
+  const optFont = q.type === 'listen' ? '' : ' tx';
+  return h('div', {class: 'q'}, head(label), body,
+    h('div', {class: 'opts'}, order.map(k => h('button', {
+      class: 'opt' + optFont + (ans != null && k === q.answer ? ' right' : '') + (ans === k && k !== q.answer ? ' wrong' : ''),
+      type: 'button', disabled: ans != null, text: q.options[k],
+      onclick: () => { Q.answers[i] = k; render(); if (k === q.answer && q.type === 'meaning') say(q.options[k], 'me'); }}))),
+    ans != null && q.explain ? h('p', {class: 'small ' + (ans === q.answer ? 'muted' : ''), text: (ans === q.answer ? '정답. ' : '오답. ') + q.explain}) : null);
+}
+function selfGradeBlock(L, done) {
+  const Q = S.session.quiz;
+  const prods = L.quiz.map((q, i) => [q, i]).filter(([q]) => q.type === 'produce');
+  if (!done) return h('p', {class: 'small muted', text: '모든 문항에 답하면 모범답과 비교해 스스로 채점해요.'});
+  return h('div', {class: 'stack'},
+    h('p', {class: 'small', text: '모범답과 비교해 스스로 채점해 주세요. 뜻이 같고 자연스러우면 표현이 달라도 맞음이에요.'}),
+    prods.map(([q, i]) => h('div', {class: 'stack', style: 'gap:4px'},
+      h('span', {class: 'small muted', text: `${i + 1}. ${q.prompt}`}), h('span', {class: 'tx', text: '내 답: ' + (Q.produce[i] || '')}),
+      h('div', {class: 'row'}, h('span', {class: 'tx', text: '모범답: ' + q.model.en}), playBtn(q.model.en, 'me')),
+      h('div', {class: 'row'}, [[2, '맞음'], [1, '비슷함'], [0, '틀림']].map(([v, t]) => h('button', {class: 'btn' + (Q.selfGrade[i] === v ? ' on' : ''), type: 'button', text: t, onclick: () => { Q.selfGrade[i] = v; render(); }}))))),
+    h('button', {class: 'btn primary', type: 'button', text: '채점 확정', disabled: prods.some(([, i]) => Q.selfGrade[i] == null),
+      onclick: () => { Q.graded = {}; prods.forEach(([, i]) => { Q.graded[i] = {score: Q.selfGrade[i]}; }); render(); }}));
+}
+function quizScore(L) {
+  const Q = S.session.quiz;
+  const pts = L.quiz.reduce((s, q, i) => s + (q.type === 'produce' ? (((Q.graded || {})[i] || {}).score || 0) / 2 : (Q.answers[i] === q.answer ? 1 : 0)), 0);
+  return {pts, pct: L.quiz.length ? pts / L.quiz.length : null};
+}
+
+/* ---------- finish: 결과를 보내고, 채점은 밤 11시 ---------- */
+async function finishSession() {
+  if (S.finishing) return;
+  S.finishing = true; render();
+  const L = S.lesson, ss = S.session, t = todayStr(), now = Date.now();
+  ss.steps.test = true;
+  const minutes = clamp(Math.round((now - ss.startedAt) / 60000), 1, 60);
+  const Q = ss.quiz, turns = roleTurns(L);
+  const payload = {
+    v: 1, id: `${L.id}-${now.toString(36)}`, lessonId: L.id, seq: L.seq, date: t,
+    startedAt: new Date(ss.startedAt).toISOString(), completedAt: new Date(now).toISOString(), minutes,
+    steps: Object.assign({}, ss.steps), stepsDone: STEPS.filter(s => ss.steps[s.key]).length,
+    review: {total: ss.review.total, known: ss.review.known},
+    quiz: {items: L.quiz.map((q, i) => q.type === 'produce'
+      ? {i, answer: (Q.produce[i] || '').trim().slice(0, 400), self: ((Q.graded || {})[i] || {}).score ?? null}
+      : {i, chosen: Q.answers[i] ?? null})},
+    roleplay: {mode: (L.roleplay.script && L.roleplay.script.length) ? 'script' : 'free',
+      turns: ss.role.replies.map((me, k) => ({partner: (turns[k] || {}).en || '', me: String(me || '').slice(0, 800)})).filter(x => x.me),
+      goalsSelf: ss.role.goalsSelf},
+    provisional: {quizPct: quizScore(L).pct}
+  };
+  const rec = {id: payload.id, lessonId: L.id, seq: L.seq, title: L.title, date: t, completedAt: payload.completedAt, minutes, quizPct: payload.provisional.quizPct, payload};
+  S.local.results[rec.id] = rec;
+  if (!S.local.cards[L.id]) S.local.cards[L.id] = {lessonId: L.id, items: L.expressions.map(e => ({en: e.en, ko: e.ko, box: 1, due: addDays(t, 1)}))};
+  saveLocal();
+  LS.set('draft', null);
+  try { await sendResult(rec); } catch (e) { rec.error = errText(e); saveLocal(); toast('결과를 보내지 못했어요. 홈에서 다시 보낼 수 있어요.'); }
+  S.lastResult = rec;
+  S.finishing = false; S.session = null;
+  await pickLesson().catch(() => { S.lesson = null; });
+  S.view = 'result'; render(); window.scrollTo(0, 0);
+}
+function viewResult() {
+  const r = S.lastResult;
+  if (!r) { S.view = 'home'; return viewHome(); }
+  const p = r.payload || {};
+  return h('div', {class: 'wrap'},
+    h('section', {class: 'card'},
+      h('span', {class: 'eyebrow', text: `${r.date} · 레슨 ${r.seq} · ${r.minutes}분`}),
+      h('h1', {text: '오늘 30분 끝'}),
+      h('div', {class: 'tiles'},
+        h('div', {class: 'stat'}, h('b', {text: pct(r.quizPct)}), h('span', {text: '테스트(가채점)'})),
+        h('div', {class: 'stat'}, h('b', {text: p.review && p.review.total ? `${p.review.known}/${p.review.total}` : '–'}), h('span', {text: '복습 기억'})),
+        h('div', {class: 'stat'}, h('b', {text: String((p.roleplay && p.roleplay.turns.length) || 0)}), h('span', {text: '롤플레이 답'})),
+        h('div', {class: 'stat'}, h('b', {text: `${p.stepsDone || 0}/6`}), h('span', {text: '한 단계'}))),
+      h('div', {class: 'notice ' + (r.error && !r.sentAt ? 'warn' : 'good') + ' small', text: r.error && !r.sentAt
+        ? '결과를 아직 보내지 못했어요. 인터넷이 연결되면 홈에서 다시 보내기를 눌러 주세요.'
+        : '결과를 보냈어요. 오늘 밤 11시에 작문·롤플레이를 채점하고, 레벨을 조정하고, 내 약점에 맞춘 다음 레슨을 올려 둘게요.'})),
+    h('section', {class: 'card'}, h('h2', {text: '다음 레슨'}),
+      S.lesson ? h('div', {class: 'stack'}, h('p', null, h('b', {text: S.lesson.title})), h('p', {class: 'small muted', text: `${S.lesson.theme} · Lv ${fmtLv(S.lesson.level)} · ${S.lesson.scene}`}))
+        : h('p', {class: 'small muted', text: '준비된 레슨을 다 했어요. 다음 레슨은 오늘 밤 11시에 올라와요.'}),
+      h('div', {class: 'row'}, h('button', {class: 'btn', type: 'button', text: '홈으로', onclick: () => { S.view = 'home'; render(); window.scrollTo(0, 0); }}))));
+}
+
+
+boot();
+})();
+</script>
+</body>
+</html>

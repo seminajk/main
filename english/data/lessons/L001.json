@@ -1,0 +1,265 @@
+{
+  "createdAt": "2026-10-07T14:30:00+09:00",
+  "dialogue": [
+    {
+      "en": "Good evening. Welcome to the Parkline Hotel. Are you checking in?",
+      "ko": "안녕하세요. 파크라인 호텔에 오신 걸 환영합니다. 체크인하시나요?",
+      "name": "Clerk",
+      "nameKo": "직원",
+      "who": "partner"
+    },
+    {
+      "en": "Yes, I have a reservation under Kim.",
+      "ko": "네, 김으로 예약했어요.",
+      "name": "Me",
+      "nameKo": "나",
+      "who": "me"
+    },
+    {
+      "en": "Let me check. Yes, I have it here. Three nights in a king room. May I see your passport, please?",
+      "ko": "확인해 볼게요. 네, 여기 있네요. 킹 룸 3박이요. 여권 좀 보여 주시겠어요?",
+      "name": "Clerk",
+      "nameKo": "직원",
+      "who": "partner"
+    },
+    {
+      "en": "Here you go. Is breakfast included?",
+      "ko": "여기요. 조식 포함인가요?",
+      "name": "Me",
+      "nameKo": "나",
+      "who": "me"
+    },
+    {
+      "en": "Yes, it is. Breakfast is served from 6:30 to 10:30 on the second floor.",
+      "ko": "네, 포함이에요. 조식은 6시 반부터 10시 반까지 2층에서 제공돼요.",
+      "name": "Clerk",
+      "nameKo": "직원",
+      "who": "partner"
+    },
+    {
+      "en": "Great. Could I get a quiet room on a high floor, if possible?",
+      "ko": "좋네요. 가능하면 높은 층의 조용한 방으로 받을 수 있을까요?",
+      "name": "Me",
+      "nameKo": "나",
+      "who": "me"
+    },
+    {
+      "en": "Sure, let me see what I can do. Okay, you're on the eighteenth floor. Here's your key card.",
+      "ko": "물론이죠, 알아볼게요. 됐습니다, 18층이에요. 여기 키 카드요.",
+      "name": "Clerk",
+      "nameKo": "직원",
+      "who": "partner"
+    },
+    {
+      "en": "Thank you. Also, could I get a late checkout on Friday?",
+      "ko": "감사합니다. 그리고 금요일에 늦은 체크아웃이 가능할까요?",
+      "name": "Me",
+      "nameKo": "나",
+      "who": "me"
+    },
+    {
+      "en": "I can give you until 1 p.m. Does that work for you?",
+      "ko": "오후 1시까지 드릴 수 있어요. 괜찮으세요?",
+      "name": "Clerk",
+      "nameKo": "직원",
+      "who": "partner"
+    },
+    {
+      "en": "That's perfect. Thanks for your help.",
+      "ko": "딱 좋아요. 도와주셔서 감사해요.",
+      "name": "Me",
+      "nameKo": "나",
+      "who": "me"
+    }
+  ],
+  "expressions": [
+    {
+      "en": "I have a reservation under Kim.",
+      "ko": "김으로 예약했어요.",
+      "note": "예약 확인의 기본 문장. 이름 앞에는 under를 쓴다. 식당·렌터카에서도 그대로 쓴다."
+    },
+    {
+      "en": "Is breakfast included?",
+      "ko": "조식 포함인가요?",
+      "note": "Is ___ included? 하나로 Wi-Fi, parking, tax 포함 여부를 다 물을 수 있다."
+    },
+    {
+      "en": "Could I get a quiet room?",
+      "ko": "조용한 방으로 받을 수 있을까요?",
+      "note": "Could I get ___? 는 가게·호텔에서 무언가를 부탁하는 가장 무난한 형태. Can I보다 한 단계 정중하다."
+    },
+    {
+      "en": "if possible",
+      "ko": "가능하다면",
+      "note": "요청 끝에 붙이면 강요하는 느낌이 줄어든다. 무리한 부탁일수록 붙이면 좋다."
+    },
+    {
+      "en": "Does that work for you?",
+      "ko": "괜찮으세요? (그걸로 되세요?)",
+      "note": "상대가 제안을 하며 확인할 때 자주 듣는 말. 내가 일정·시간을 제안할 때도 쓸 수 있다."
+    }
+  ],
+  "generatedBy": "claude-session",
+  "goal": "이름으로 예약을 확인하고, 포함 여부를 묻고, Could I get ~? 으로 정중하게 요청할 수 있다.",
+  "grammar": {
+    "examples": [
+      {
+        "en": "Can I get a late checkout?",
+        "ko": "늦은 체크아웃 돼요? (기본)"
+      },
+      {
+        "en": "Could I get a late checkout?",
+        "ko": "늦은 체크아웃 가능할까요? (정중)"
+      },
+      {
+        "en": "Would it be possible to get a late checkout?",
+        "ko": "혹시 늦은 체크아웃이 가능할지요? (더 정중)"
+      }
+    ],
+    "explain": "같은 부탁도 Can I ~? → Could I ~? → Would it be possible to ~? 순으로 정중해진다. 호텔·식당에서는 Could I ~? 를 기본으로, 규정 밖의 부탁(늦은 체크아웃, 방 변경 등)에는 Would it be possible to ~? 를 쓰면 무난하다.",
+    "title": "요청의 정중도 3단계"
+  },
+  "id": "L001",
+  "kind": "normal",
+  "level": 3.5,
+  "quiz": [
+    {
+      "answer": 0,
+      "en": "Is breakfast included?",
+      "explain": "Is ___ included? = ~ 포함인가요?",
+      "options": [
+        "조식 포함인가요?",
+        "조식은 몇 시에 하나요?",
+        "조식을 방으로 가져다줄 수 있나요?",
+        "조식은 2층에서 해요."
+      ],
+      "skill": "듣기",
+      "type": "listen"
+    },
+    {
+      "answer": 0,
+      "en": "Here's your key card.",
+      "explain": "Here's ~ = 여기 ~ 있어요(건네줄 때).",
+      "options": [
+        "여기 키 카드 드릴게요.",
+        "키 카드를 잃어버렸어요.",
+        "키 카드가 작동하지 않아요.",
+        "키 카드를 두 장 주세요."
+      ],
+      "skill": "듣기",
+      "type": "listen"
+    },
+    {
+      "answer": 0,
+      "explain": "예약자 이름 앞에는 under. reservation은 명사, reserve는 동사.",
+      "options": [
+        "I have a reservation under Kim.",
+        "I have a reservation on Kim.",
+        "I made a reservation of Kim.",
+        "I have reserve under Kim."
+      ],
+      "prompt": "김으로 예약했어요.",
+      "skill": "전치사·관사",
+      "type": "meaning"
+    },
+    {
+      "answer": 0,
+      "explain": "Could I 뒤에는 동사원형(get). if possible은 그대로 굳은 표현.",
+      "options": [
+        "Could I get a quiet room, if possible?",
+        "Could I get a quiet room, if it possible?",
+        "Could I getting a quiet room, if possible?",
+        "Could I got a quiet room, if possible?"
+      ],
+      "prompt": "가능하면 조용한 방으로 받을 수 있을까요?",
+      "skill": "시제·동사",
+      "type": "meaning"
+    },
+    {
+      "answer": 0,
+      "en": "Breakfast is served ___ the second floor.",
+      "explain": "층에는 on: on the second floor.",
+      "ko": "조식은 2층에서 제공돼요.",
+      "options": [
+        "on",
+        "to",
+        "for",
+        "by"
+      ],
+      "skill": "전치사·관사",
+      "type": "blank"
+    },
+    {
+      "answer": 0,
+      "en": "Breakfast is served ___ 6:30 to 10:30.",
+      "explain": "구간은 from A to B. since는 '~이후로 지금까지'.",
+      "ko": "조식은 6시 반부터 10시 반까지예요.",
+      "options": [
+        "from",
+        "since",
+        "by",
+        "until"
+      ],
+      "skill": "전치사·관사",
+      "type": "blank"
+    },
+    {
+      "accept": [
+        "Does the room include breakfast?",
+        "Does it include breakfast?"
+      ],
+      "model": {
+        "en": "Is breakfast included?"
+      },
+      "prompt": "조식 포함인가요?",
+      "skill": "작문",
+      "type": "produce"
+    },
+    {
+      "accept": [
+        "Can I get a late checkout on Friday?",
+        "Would it be possible to check out late on Friday?"
+      ],
+      "model": {
+        "en": "Could I get a late checkout on Friday?"
+      },
+      "prompt": "금요일에 늦은 체크아웃이 가능할까요?",
+      "skill": "작문",
+      "type": "produce"
+    }
+  ],
+  "roleplay": {
+    "goals": [
+      "이름으로 예약 확인하기",
+      "조식·와이파이 등 포함 여부 묻기",
+      "방에 대한 요청 하나 하기(층·조용한 방 등)",
+      "늦은 체크아웃 요청하기"
+    ],
+    "mustUse": [
+      "I have a reservation under ___",
+      "Is ___ included?",
+      "Could I get ___?"
+    ],
+    "opening": {
+      "en": "Good evening, welcome to the Parkline Hotel. Are you checking in?",
+      "ko": "안녕하세요, 파크라인 호텔에 오신 걸 환영합니다. 체크인하시나요?"
+    },
+    "partner": "Front desk clerk at a New York hotel",
+    "partnerKo": "뉴욕 호텔 프런트 직원",
+    "setting": "출장으로 뉴욕의 호텔에 막 도착했다. 체크인을 하면서 포함 사항을 묻고, 방과 체크아웃에 대해 부탁해 보자."
+  },
+  "scene": "출장으로 뉴욕의 호텔에 저녁에 도착했다. 프런트에서 예약을 확인하고, 조식 포함 여부를 묻고, 조용한 방과 늦은 체크아웃을 부탁한다.",
+  "seq": 1,
+  "speaking": {
+    "sample": {
+      "en": "I have a reservation under Kim. Is Wi-Fi included? Could I get a room away from the elevator, if possible?",
+      "ko": "김으로 예약했어요. 와이파이 포함인가요? 가능하면 엘리베이터에서 먼 방으로 받을 수 있을까요?"
+    },
+    "task": "오늘 표현으로 호텔에 할 말 3문장을 소리 내어 말해 보세요: 예약 확인, 포함 여부 질문, 방에 대한 요청."
+  },
+  "theme": "여행",
+  "tip": "미국 호텔은 체크인 때 카드에 보증금(incidental hold)을 걸어 두는 경우가 많다. 'Is there a deposit?'(보증금이 있나요?)라고 미리 물어보면 당황하지 않는다.",
+  "title": "출장 첫날 호텔 체크인: 예약 확인하고 요청하기",
+  "titleEn": "Checking in and making requests",
+  "topic": "출장지 호텔 체크인과 요청"
+}
